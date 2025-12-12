@@ -16,7 +16,7 @@ const FrontPage = () => {
     useEffect(() => {
         const isLoggedIn = localStorage.getItem("isLoggedIn");
         if (!isLoggedIn) {
-            router.push("/auth");
+            router.push("/main");
         }
     }, []);
 
