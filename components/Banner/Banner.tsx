@@ -18,7 +18,17 @@ const Banner = ({ activeIndex, setActiveIndex, userData, selectedFlight, adults,
     const router = useRouter();
 
     // If nothing is selected → don't render anything
-    if (!selectedFlight) return null;
+    if (!selectedFlight) return (
+        <div className="h-130 flex flex-col items-center bg-white">
+            <Image
+                src="/Images/LandingPageImage3.JPG"
+                alt=""
+                width={1700}
+                height={0}
+                className="object-cover rounded-2xl"
+            />
+        </div>
+    );
 
     // Destructure flight details safely
     const {
@@ -133,7 +143,6 @@ const Banner = ({ activeIndex, setActiveIndex, userData, selectedFlight, adults,
 
     return (
         <div className="relative w-full flex flex-row justify-between items-start px-30 py-10">
-
             {/* LEFT: Selected Flight Details */}
             <div className="flex flex-col gap-5 justify-between">
                 <div className="bg-white rounded-xl p-6 border border-gray-300">

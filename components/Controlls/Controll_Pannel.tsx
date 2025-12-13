@@ -14,6 +14,7 @@ interface ControlPanelProps {
     children: number;
     classType: string;
     activeIndex: number;
+    bookedFlights: any;
 
     setAdults: (value: number) => void;
     setChildren: (value: number) => void;
@@ -31,6 +32,7 @@ const Controll_Pannel: React.FC<ControlPanelProps> = ({
     setClassType,
     activeIndex,
     setActiveIndex,
+    bookedFlights
 }) => {
     const [open, setOpen] = useState(false);
     const [openDate, setOpenDate] = useState(false);
@@ -112,26 +114,6 @@ const Controll_Pannel: React.FC<ControlPanelProps> = ({
     })
 
 
-    const bookedFlights = [
-        {
-            flightName: "IndiGo",
-            flightCode: "6E-203",
-            from: "Delhi",
-            to: "Mumbai",
-            seats: 3,
-            amount: 18500
-        },
-        {
-            flightName: "Air India",
-            flightCode: "AI-101",
-            from: "Bangalore",
-            to: "Chennai",
-            seats: 2,
-            amount: 9200
-        }
-    ];
-
-
     return (
         <div className="sm:px-30 px-5 pb-10">
             <div className="border-1 border-gray-300 p-3 gap-5 flex flex-col rounded-2xl px-7 pb-7">
@@ -146,7 +128,7 @@ const Controll_Pannel: React.FC<ControlPanelProps> = ({
                                 <button onClick={() => { setActiveField("from"); setOpen(true); }} className="border shadow-lg sm:h-20 w-[47%] h-8 py-2 border-gray-200 rounded-lg flex flex-row">
                                     <div className="border-r-[1px] flex-col w-[30%] items-start pl-4 border-gray-300 justify-center flex">
                                         <a className="text-xs text-gray-700">From</a>
-                                        <text className="font-bold sm:text-lg text-xs text-gray-800">{selectedCode}</text>
+                                        <p className="font-bold sm:text-lg text-xs text-gray-800">{selectedCode}</p>
                                     </div>
                                     <div className="px-4 justify-center items-start flex flex-col w-[70%]">
                                         <p className="font-semibold sm:text-lg text-xs text-gray-800">{selectedCity}</p>
@@ -158,8 +140,8 @@ const Controll_Pannel: React.FC<ControlPanelProps> = ({
                                 </div>
                                 <button onClick={() => { setActiveField("to"); setOpen(true); }} className="border shadow-lg w-[47%] sm:h-20 h-8 py-2 border-gray-200 rounded-lg flex flex-row">
                                     <div className="border-r-[1px] flex-col w-[30%] items-start pl-4 border-gray-300 justify-center flex">
-                                        <text className="text-xs text-gray-700">To</text>
-                                        <text className="font-bold sm:text-lg text-xs text-gray-800">{selectedCode2}</text>
+                                        <p className="text-xs text-gray-700">To</p>
+                                        <p className="font-bold sm:text-lg text-xs text-gray-800">{selectedCode2}</p>
                                     </div>
                                     <div className="px-4 justify-center items-start flex flex-col w-[70%]">
                                         <p className="font-semibold sm:text-lg text-xs text-gray-800">{selectedCity2}</p>
@@ -169,7 +151,7 @@ const Controll_Pannel: React.FC<ControlPanelProps> = ({
                             </div>
                             <button className="rounded-lg w-[100%] shadow-lg border border-gray-200 py-3 items-center items-center justify-between px-5 flex flex-row">
                                 <div className="flex flex-col items-start gap-0.5">
-                                    <text className="text-gray-700 text-xs">Flight Options</text>
+                                    <p className="text-gray-700 text-xs">Flight Options</p>
                                     <p className="font-semibold text-black text-lg">Return</p>
                                 </div>
                                 <MoveDownIcon className="w-5 h-5 text-black" />
@@ -238,7 +220,7 @@ const Controll_Pannel: React.FC<ControlPanelProps> = ({
                             <div className="flex flex-row justify-between">
                                 <button onClick={() => setPassengerModalOpen(true)} className="border w-[47.5%] shadow-lg sm:h-20 h-8 py-2 border-gray-200 rounded-lg flex flex-row">
                                     <div className="border-r-[1px] p-4 flex-col w-[30%] border-gray-300 justify-center flex">
-                                        <text className="font-bold sm:text-2xl text-xs text-gray-800">{adults + children}</text>
+                                        <p className="font-bold sm:text-2xl text-xs text-gray-800">{adults + children}</p>
                                     </div>
                                     <div className="px-4 justify-center items-start flex flex-col w-[70%]">
                                         <p className="font-semibold sm:text-lg text-xs text-gray-800">Passenger</p>
@@ -248,8 +230,8 @@ const Controll_Pannel: React.FC<ControlPanelProps> = ({
 
                                 <button onClick={() => setOpenClass(true)} className="border shadow-lg w-[47.5%] sm:h-20 h-8 px-4 py-2 border-gray-200 rounded-lg flex flex-row">
                                     <div className="flex-col items-start w-[30%] w-full border-gray-300 justify-center flex">
-                                        <text className="text-xs text-gray-700">Class</text>
-                                        <text className="font-bold sm:text-xl text-xs text-gray-800">{selectClass}</text>
+                                        <p className="text-xs text-gray-700">Class</p>
+                                        <p className="font-bold sm:text-xl text-xs text-gray-800">{selectClass}</p>
                                     </div>
                                 </button>
                             </div>
@@ -275,20 +257,20 @@ const Controll_Pannel: React.FC<ControlPanelProps> = ({
                                     {/* Left: Flight Info */}
                                     <div className="flex flex-col gap-1">
                                         <p className="text-sm text-gray-500">
-                                            {flight.flightName}
+                                            {flight.airline}
                                         </p>
                                         <p className="text-lg font-semibold text-gray-800">
-                                            {flight.flightCode}
+                                            {flight.flightNumber}
                                         </p>
                                         <p className="text-sm text-gray-600">
-                                            {flight.from} → {flight.to}
+                                            {flight.fromCity} → {flight.toCity}
                                         </p>
                                     </div>
 
                                     {/* Middle: Seats */}
                                     <div className="text-sm flex border-1 border-gray-400 px-4 rounded-lg p-2 flex-row gap-2 text-gray-700">
                                         <p className="font-bold">Seats</p>
-                                        <p className="font-bold">{flight.seats}</p>
+                                        <p className="font-bold">{flight.seatNumbers}</p>
                                     </div>
 
                                     {/* Right: Amount */}
@@ -297,7 +279,7 @@ const Controll_Pannel: React.FC<ControlPanelProps> = ({
                                             Amount Payed
                                         </p>
                                         <p className="text-lg font-bold text-purple-700">
-                                            ₹ {flight.amount}
+                                            ₹ {flight.totalPrice}
                                         </p>
                                     </div>
                                 </div>
