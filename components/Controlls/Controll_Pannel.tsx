@@ -13,10 +13,12 @@ interface ControlPanelProps {
     adults: number;
     children: number;
     classType: string;
+    activeIndex: number;
 
     setAdults: (value: number) => void;
     setChildren: (value: number) => void;
     setClassType: (value: string) => void;
+    setActiveIndex: (value: number) => void;
 }
 
 const Controll_Pannel: React.FC<ControlPanelProps> = ({
@@ -26,9 +28,10 @@ const Controll_Pannel: React.FC<ControlPanelProps> = ({
     classType,
     setAdults,
     setChildren,
-    setClassType
+    setClassType,
+    activeIndex,
+    setActiveIndex,
 }) => {
-    const [activeIndex, setActiveIndex] = useState(0);
     const [open, setOpen] = useState(false);
     const [openDate, setOpenDate] = useState(false);
     const [openClass, setOpenClass] = useState(false);
@@ -108,6 +111,27 @@ const Controll_Pannel: React.FC<ControlPanelProps> = ({
         )
     })
 
+
+    const bookedFlights = [
+        {
+            flightName: "IndiGo",
+            flightCode: "6E-203",
+            from: "Delhi",
+            to: "Mumbai",
+            seats: 3,
+            amount: 18500
+        },
+        {
+            flightName: "Air India",
+            flightCode: "AI-101",
+            from: "Bangalore",
+            to: "Chennai",
+            seats: 2,
+            amount: 9200
+        }
+    ];
+
+
     return (
         <div className="sm:px-30 px-5 pb-10">
             <div className="border-1 border-gray-300 p-3 gap-5 flex flex-col rounded-2xl px-7 pb-7">
@@ -115,123 +139,175 @@ const Controll_Pannel: React.FC<ControlPanelProps> = ({
                     {allServices}
                 </div>
                 {/* from to section */}
-                <div className="flex flex-row gap-10 items-center">
-                    <div className="w-[50%] gap-5 flex flex-col">
-                        <div className="flex flex-row w-[100%] gap-2 items-center">
-                            <button onClick={() => { setActiveField("from"); setOpen(true); }} className="border shadow-lg sm:h-20 w-[47%] h-8 py-2 border-gray-200 rounded-lg flex flex-row">
-                                <div className="border-r-[1px] flex-col w-[30%] items-start pl-4 border-gray-300 justify-center flex">
-                                    <a className="text-xs text-gray-700">From</a>
-                                    <text className="font-bold sm:text-lg text-xs text-gray-800">{selectedCode}</text>
+                {activeIndex === 0 ?
+                    <div className="flex flex-row gap-10 items-center">
+                        <div className="w-[50%] gap-5 flex flex-col">
+                            <div className="flex flex-row w-[100%] gap-2 items-center">
+                                <button onClick={() => { setActiveField("from"); setOpen(true); }} className="border shadow-lg sm:h-20 w-[47%] h-8 py-2 border-gray-200 rounded-lg flex flex-row">
+                                    <div className="border-r-[1px] flex-col w-[30%] items-start pl-4 border-gray-300 justify-center flex">
+                                        <a className="text-xs text-gray-700">From</a>
+                                        <text className="font-bold sm:text-lg text-xs text-gray-800">{selectedCode}</text>
+                                    </div>
+                                    <div className="px-4 justify-center items-start flex flex-col w-[70%]">
+                                        <p className="font-semibold sm:text-lg text-xs text-gray-800">{selectedCity}</p>
+                                        <p className="text-xs w-[90%] truncate text-gray-700">{selectedAddress}</p>
+                                    </div>
+                                </button>
+                                <div className="rounded-full shadow-lg flex justify-center h-10 w-10 items-center border-1 border-gray-300">
+                                    <ArrowLeftRight className="w-4 h-4 text-black" />
                                 </div>
-                                <div className="px-4 justify-center items-start flex flex-col w-[70%]">
-                                    <p className="font-semibold sm:text-lg text-xs text-gray-800">{selectedCity}</p>
-                                    <p className="text-xs w-[90%] truncate text-gray-700">{selectedAddress}</p>
-                                </div>
-                            </button>
-                            <div className="rounded-full shadow-lg flex justify-center h-10 w-10 items-center border-1 border-gray-300">
-                                <ArrowLeftRight className="w-4 h-4 text-black" />
+                                <button onClick={() => { setActiveField("to"); setOpen(true); }} className="border shadow-lg w-[47%] sm:h-20 h-8 py-2 border-gray-200 rounded-lg flex flex-row">
+                                    <div className="border-r-[1px] flex-col w-[30%] items-start pl-4 border-gray-300 justify-center flex">
+                                        <text className="text-xs text-gray-700">To</text>
+                                        <text className="font-bold sm:text-lg text-xs text-gray-800">{selectedCode2}</text>
+                                    </div>
+                                    <div className="px-4 justify-center items-start flex flex-col w-[70%]">
+                                        <p className="font-semibold sm:text-lg text-xs text-gray-800">{selectedCity2}</p>
+                                        <p className="text-xs w-[90%] truncate text-gray-700">{selectedAddress2}</p>
+                                    </div>
+                                </button>
                             </div>
-                            <button onClick={() => { setActiveField("to"); setOpen(true); }} className="border shadow-lg w-[47%] sm:h-20 h-8 py-2 border-gray-200 rounded-lg flex flex-row">
-                                <div className="border-r-[1px] flex-col w-[30%] items-start pl-4 border-gray-300 justify-center flex">
-                                    <text className="text-xs text-gray-700">To</text>
-                                    <text className="font-bold sm:text-lg text-xs text-gray-800">{selectedCode2}</text>
+                            <button className="rounded-lg w-[100%] shadow-lg border border-gray-200 py-3 items-center items-center justify-between px-5 flex flex-row">
+                                <div className="flex flex-col items-start gap-0.5">
+                                    <text className="text-gray-700 text-xs">Flight Options</text>
+                                    <p className="font-semibold text-black text-lg">Return</p>
                                 </div>
-                                <div className="px-4 justify-center items-start flex flex-col w-[70%]">
-                                    <p className="font-semibold sm:text-lg text-xs text-gray-800">{selectedCity2}</p>
-                                    <p className="text-xs w-[90%] truncate text-gray-700">{selectedAddress2}</p>
-                                </div>
+                                <MoveDownIcon className="w-5 h-5 text-black" />
                             </button>
                         </div>
-                        <button className="rounded-lg w-[100%] shadow-lg border border-gray-200 py-3 items-center items-center justify-between px-5 flex flex-row">
-                            <div className="flex flex-col items-start gap-0.5">
-                                <text className="text-gray-700 text-xs">Flight Options</text>
-                                <p className="font-semibold text-black text-lg">Return</p>
+
+                        <div className="w-[50%] flex flex-col gap-5">
+                            <div className="w-[100%] justify-between flex flex-row">
+
+                                {/* Departing Button */}
+                                <button
+                                    onClick={() => {
+                                        setActiveField2("departing");
+                                        setOpenDate(true);
+                                    }}
+                                    className="border w-[47.5%] shadow-lg sm:h-20 h-12 py-2 border-gray-200 rounded-lg flex flex-row"
+                                >
+                                    <div className="border-r-[1px] p-4 flex-col w-[30%] border-gray-300 justify-center flex items-center">
+                                        <span className="text-xs text-gray-700">Departing</span>
+                                        <span className="font-bold sm:text-2xl text-xs text-gray-800">
+                                            {departingDate ? departingDate.getDate() : "--"}
+                                        </span>
+                                    </div>
+
+                                    <div className="px-4 justify-center items-start flex flex-col w-[70%]">
+                                        <p className="font-semibold sm:text-lg text-xs text-gray-800">
+                                            {departingDate ? departingDate.toLocaleString("default", { month: "long" }) : "Month"}
+                                        </p>
+                                        <p className="text-xs text-gray-700">
+                                            {departingDate
+                                                ? departingDate.toLocaleDateString("en-US", { weekday: "long", year: "numeric" })
+                                                : "Day, Year"}
+                                        </p>
+                                    </div>
+                                </button>
+
+                                {/* Returning Button */}
+                                <button
+                                    onClick={() => {
+                                        setActiveField2("returning");
+                                        setOpenDate(true);
+                                    }}
+                                    className="border w-[47.5%] shadow-lg sm:h-20 h-12 py-2 border-gray-200 rounded-lg flex flex-row"
+                                >
+                                    <div className="border-r-[1px] p-4 flex-col w-[30%] border-gray-300 justify-center flex items-center">
+                                        <span className="text-xs text-gray-700">Returning</span>
+                                        <span className="font-bold sm:text-2xl text-xs text-gray-800">
+                                            {returningDate ? returningDate.getDate() : "--"}
+                                        </span>
+                                    </div>
+
+                                    <div className="px-4 justify-center items-start flex flex-col w-[70%]">
+                                        <p className="font-semibold sm:text-lg text-xs text-gray-800">
+                                            {returningDate ? returningDate.toLocaleString("default", { month: "long" }) : "Month"}
+                                        </p>
+                                        <p className="text-xs text-gray-700">
+                                            {returningDate
+                                                ? returningDate.toLocaleDateString("en-US", { weekday: "long", year: "numeric" })
+                                                : "Day, Year"}
+                                        </p>
+                                    </div>
+                                </button>
+
                             </div>
-                            <MoveDownIcon className="w-5 h-5 text-black" />
-                        </button>
-                    </div>
 
-                    <div className="w-[50%] flex flex-col gap-5">
-                        <div className="w-[100%] justify-between flex flex-row">
+                            <div className="flex flex-row justify-between">
+                                <button onClick={() => setPassengerModalOpen(true)} className="border w-[47.5%] shadow-lg sm:h-20 h-8 py-2 border-gray-200 rounded-lg flex flex-row">
+                                    <div className="border-r-[1px] p-4 flex-col w-[30%] border-gray-300 justify-center flex">
+                                        <text className="font-bold sm:text-2xl text-xs text-gray-800">{adults + children}</text>
+                                    </div>
+                                    <div className="px-4 justify-center items-start flex flex-col w-[70%]">
+                                        <p className="font-semibold sm:text-lg text-xs text-gray-800">Passenger</p>
+                                        <p className="text-xs text-gray-700">{adults} Adults, {children} Children</p>
+                                    </div>
+                                </button>
 
-                            {/* Departing Button */}
-                            <button
-                                onClick={() => {
-                                    setActiveField2("departing");
-                                    setOpenDate(true);
-                                }}
-                                className="border w-[47.5%] shadow-lg sm:h-20 h-12 py-2 border-gray-200 rounded-lg flex flex-row"
-                            >
-                                <div className="border-r-[1px] p-4 flex-col w-[30%] border-gray-300 justify-center flex items-center">
-                                    <span className="text-xs text-gray-700">Departing</span>
-                                    <span className="font-bold sm:text-2xl text-xs text-gray-800">
-                                        {departingDate ? departingDate.getDate() : "--"}
-                                    </span>
-                                </div>
-
-                                <div className="px-4 justify-center items-start flex flex-col w-[70%]">
-                                    <p className="font-semibold sm:text-lg text-xs text-gray-800">
-                                        {departingDate ? departingDate.toLocaleString("default", { month: "long" }) : "Month"}
-                                    </p>
-                                    <p className="text-xs text-gray-700">
-                                        {departingDate
-                                            ? departingDate.toLocaleDateString("en-US", { weekday: "long", year: "numeric" })
-                                            : "Day, Year"}
-                                    </p>
-                                </div>
-                            </button>
-
-                            {/* Returning Button */}
-                            <button
-                                onClick={() => {
-                                    setActiveField2("returning");
-                                    setOpenDate(true);
-                                }}
-                                className="border w-[47.5%] shadow-lg sm:h-20 h-12 py-2 border-gray-200 rounded-lg flex flex-row"
-                            >
-                                <div className="border-r-[1px] p-4 flex-col w-[30%] border-gray-300 justify-center flex items-center">
-                                    <span className="text-xs text-gray-700">Returning</span>
-                                    <span className="font-bold sm:text-2xl text-xs text-gray-800">
-                                        {returningDate ? returningDate.getDate() : "--"}
-                                    </span>
-                                </div>
-
-                                <div className="px-4 justify-center items-start flex flex-col w-[70%]">
-                                    <p className="font-semibold sm:text-lg text-xs text-gray-800">
-                                        {returningDate ? returningDate.toLocaleString("default", { month: "long" }) : "Month"}
-                                    </p>
-                                    <p className="text-xs text-gray-700">
-                                        {returningDate
-                                            ? returningDate.toLocaleDateString("en-US", { weekday: "long", year: "numeric" })
-                                            : "Day, Year"}
-                                    </p>
-                                </div>
-                            </button>
-
+                                <button onClick={() => setOpenClass(true)} className="border shadow-lg w-[47.5%] sm:h-20 h-8 px-4 py-2 border-gray-200 rounded-lg flex flex-row">
+                                    <div className="flex-col items-start w-[30%] w-full border-gray-300 justify-center flex">
+                                        <text className="text-xs text-gray-700">Class</text>
+                                        <text className="font-bold sm:text-xl text-xs text-gray-800">{selectClass}</text>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
+                    </div> : null}
 
-                        <div className="flex flex-row justify-between">
-                            <button onClick={() => setPassengerModalOpen(true)} className="border w-[47.5%] shadow-lg sm:h-20 h-8 py-2 border-gray-200 rounded-lg flex flex-row">
-                                <div className="border-r-[1px] p-4 flex-col w-[30%] border-gray-300 justify-center flex">
-                                    <text className="font-bold sm:text-2xl text-xs text-gray-800">{adults + children}</text>
-                                </div>
-                                <div className="px-4 justify-center items-start flex flex-col w-[70%]">
-                                    <p className="font-semibold sm:text-lg text-xs text-gray-800">Passenger</p>
-                                    <p className="text-xs text-gray-700">{adults} Adults, {children} Children</p>
-                                </div>
-                            </button>
+                {/* Booked flight section  */}
+                {activeIndex === 1 && (
+                    <div className="w-full px-6 md:px-20 py-6">
+                        <div className="flex flex-col gap-5">
 
-                            <button onClick={() => setOpenClass(true)} className="border shadow-lg w-[47.5%] sm:h-20 h-8 px-4 py-2 border-gray-200 rounded-lg flex flex-row">
-                                <div className="flex-col items-start w-[30%] w-full border-gray-300 justify-center flex">
-                                    <text className="text-xs text-gray-700">Class</text>
-                                    <text className="font-bold sm:text-xl text-xs text-gray-800">{selectClass}</text>
+                            {/* Section Title */}
+                            <h2 className="text-xl font-semibold text-gray-800">
+                                Your Booked Flights
+                            </h2>
+
+                            {/* Records */}
+                            {bookedFlights.map((flight, index) => (
+                                <div
+                                    key={index}
+                                    className="w-full border-gray-300 border-1 rounded-xl shadow-lg p-5 px-10 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm hover:shadow-md transition"
+                                >
+                                    {/* Left: Flight Info */}
+                                    <div className="flex flex-col gap-1">
+                                        <p className="text-sm text-gray-500">
+                                            {flight.flightName}
+                                        </p>
+                                        <p className="text-lg font-semibold text-gray-800">
+                                            {flight.flightCode}
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                            {flight.from} → {flight.to}
+                                        </p>
+                                    </div>
+
+                                    {/* Middle: Seats */}
+                                    <div className="text-sm flex border-1 border-gray-400 px-4 rounded-lg p-2 flex-row gap-2 text-gray-700">
+                                        <p className="font-bold">Seats</p>
+                                        <p className="font-bold">{flight.seats}</p>
+                                    </div>
+
+                                    {/* Right: Amount */}
+                                    <div className="text-right">
+                                        <p className="text-sm text-gray-500">
+                                            Amount Payed
+                                        </p>
+                                        <p className="text-lg font-bold text-purple-700">
+                                            ₹ {flight.amount}
+                                        </p>
+                                    </div>
                                 </div>
-                            </button>
+                            ))}
                         </div>
                     </div>
-                </div>
+                )}
 
-                {showResults && (
+
+                {activeIndex === 0 && showResults && (
                     <AvailableFlights
                         from={selectedCode}
                         to={selectedCode2}
@@ -241,17 +317,18 @@ const Controll_Pannel: React.FC<ControlPanelProps> = ({
                 )}
 
                 {/* button */}
-                <button
-                    onClick={() => {
-                        if (selectedCode && selectedCode2 && departingDate && adults >= 1 && selectClass) {
-                            setShowResults(true); // show the flights section
-                        } else {
-                            alert("Please fill all required fields");
-                        }
-                    }}
-                    className="w-[100%] rounded-lg justify-center items-center flex bg-purple-600 py-4">
-                    <p className="text-white font-semibold text-xl">Continue</p>
-                </button>
+                {activeIndex === 0 ?
+                    <button
+                        onClick={() => {
+                            if (selectedCode && selectedCode2 && departingDate && adults >= 1 && selectClass) {
+                                setShowResults(true); // show the flights section
+                            } else {
+                                alert("Please fill all required fields");
+                            }
+                        }}
+                        className="w-[100%] rounded-lg justify-center items-center flex bg-purple-600 py-4">
+                        <p className="text-white font-semibold text-xl">Continue</p>
+                    </button> : null}
 
                 {/* Modal */}
                 <AirportModal isOpen={open} onClose={() => setOpen(false)}

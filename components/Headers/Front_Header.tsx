@@ -1,8 +1,6 @@
 import Image from "next/image";
 
-const Front_Header = () => {
-
-
+const Front_Header = ({ userData }) => {
     const options = ["Home", "Book", "Manage", "Help"]
     const allOptions = options.map((element, index) => {
         return (
@@ -29,8 +27,8 @@ const Front_Header = () => {
             </div>
             {/* Login/Signup Button */}
             <button className="px-2 flex justify-center items-center rounded-full">
-                <div className="w-8 h-8 rounded-full bg-red-500"></div>
-                <p className="text-lg text-black px-3 ">First Last</p>
+                <div className="w-8 h-8 rounded-full bg-gray-500"></div>
+                <p className="text-lg text-black px-3 ">{userData?.firstName} {userData?.lastName}</p>
             </button>
         </div>
     );

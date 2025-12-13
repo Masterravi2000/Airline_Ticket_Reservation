@@ -2,18 +2,117 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { CgPassword } from "react-icons/cg";
 
 const LandingPage = () => {
     const [openRegister, setOpenRegister] = useState(false);
-    const [preview, setPreview] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
-    const handleImage = (e: any) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onloadend = () => setPreview(reader.result as string);
-        reader.readAsDataURL(file);
+    const [formData, setFormData] = useState({
+        // profilePic: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: ""
+    })
+
+    const [loginData, setLoginData] = useState({
+        email: "",
+        password: ""
+    })
+
+    // const handleImage = (e: any) => {
+    //     const file = e.target.files?.[0];
+    //     if (!file) return;
+    //     if (file.size > 1_000_000) { // 1MB limit
+    //         alert("Image too large");
+    //         return;
+    //     }
+    //     const reader = new FileReader();
+    //     reader.onloadend = () => {
+    //         setPreview(reader.result as string);
+
+    //         // store image data in formData
+    //         // setFormData({ ...formData, profilePic: reader.result as string });
+    //     };
+    //     reader.readAsDataURL(file);
+    // };
+
+    const handleSignup = async () => {
+        if (!formData.firstName) {
+            alert("First Name is required");
+            return;
+        }
+        if (!formData.lastName) {
+            alert("Last Name is required");
+            return;
+        }
+        if (!formData.email) {
+            alert("email is required");
+            return;
+        }
+        if (!formData.password) {
+            alert("password is required");
+            return;
+        }
+
+        setLoading(true);
+
+        //if all sorted then do the baclend api call
+        const res = await fetch("http://localhost:8080/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+        });
+
+        const message = await res.text();
+
+        if (message !== "User registered successfully") {
+            alert(message); // shows: Email already exists
+            return;
+        }
+
+        setLoading(false);
+        alert("Account Created Successfully now you can login");
+        setOpenRegister(false);
+    }
+
+
+    const handleLogin = async () => {
+        if (!loginData.email || !loginData.password) {
+            alert("Email and password are required");
+            return;
+        }
+
+        setLoading(true);
+        localStorage.setItem("userEmail", loginData.email);
+        
+        const res = await fetch("http://localhost:8080/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(loginData),
+        });
+
+        if (!res.ok) {
+            alert("Server error. Try again.");
+            setLoading(false);
+            return;
+        }
+
+        const message = await res.text();
+        setLoading(false);
+
+        if (message !== "Login successful") {
+            alert(message);
+            return;
+        }
+
+        router.push("/main");
+        alert("Login successful!");
     };
+
 
     return (
         <div className="bg-white">
@@ -36,6 +135,10 @@ const LandingPage = () => {
                             <div>
                                 <p>Email</p>
                                 <input
+                                value={loginData.email}
+                                onChange={(e)=>{
+                                    setLoginData({...loginData, email: e.target.value})
+                                }}
                                     className="border border-gray-400 rounded-lg px-3 w-full h-10 py-2"
                                 />
                             </div>
@@ -43,11 +146,27 @@ const LandingPage = () => {
                             <div>
                                 <p>Password</p>
                                 <input
+                                value={loginData.password}
+                                onChange={(e)=>{
+                                    setLoginData({...loginData, password: e.target.value})
+                                }}
                                     className="border border-gray-400 rounded-lg px-3 w-full h-10 py-2"
                                     type="password"
                                 />
                             </div>
                         </div>
+                        {
+                            loading ?
+                                <div className="w-full flex justify-center items-center pt-5">
+                                    <div className="w-6 h-6 border-4 border-gray-300 border-t-purple-600 rounded-full animate-spin" />
+                                </div>
+                                :
+                                <button
+                                    onClick={handleLogin}
+                                    className="w-full mt-5 py-2 bg-purple-600 rounded-full flex items-center justify-center">
+                                    <a className="text-white font-semibold text-sm">Login</a>
+                                </button>
+                        }
                     </div>
 
                     <div className="p-8">
@@ -82,7 +201,7 @@ const LandingPage = () => {
                         </h2>
 
                         {/* Profile Image Upload */}
-                        <div className="flex justify-center mb-4">
+                        {/* <div className="flex justify-center mb-4">
                             <label className="cursor-pointer">
                                 {preview ? (
                                     <img
@@ -94,27 +213,41 @@ const LandingPage = () => {
                                         Profile
                                     </div>
                                 )}
-                                <input type="file" className="hidden" onChange={handleImage} />
+                                <input
+                                    type="file" className="hidden" onChange={handleImage} />
                             </label>
-                        </div>
+                        </div> */}
 
                         {/* Form Fields */}
                         <div className="flex flex-col gap-3">
                             <div>
                                 <p>First Name</p>
-                                <input className="border border-gray-400 rounded-lg px-3 w-full h-10" />
+                                <input value={formData.firstName} onChange={(e) =>
+                                    setFormData({ ...formData, firstName: e.target.value })
+                                } className="border border-gray-400 rounded-lg px-3 w-full h-10" />
                             </div>
                             <div>
                                 <p>Last Name</p>
-                                <input className="border border-gray-400 rounded-lg px-3 w-full h-10" />
+                                <input value={formData.lastName}
+                                    onChange={(e) =>
+                                        setFormData({ ...formData, lastName: e.target.value })
+                                    }
+                                    className="border border-gray-400 rounded-lg px-3 w-full h-10" />
                             </div>
                             <div>
                                 <p>Email</p>
-                                <input className="border border-gray-400 rounded-lg px-3 w-full h-10" />
+                                <input value={formData.email}
+                                    onChange={(e) => {
+                                        setFormData({ ...formData, email: e.target.value })
+                                    }}
+                                    className="border border-gray-400 rounded-lg px-3 w-full h-10" />
                             </div>
                             <div>
                                 <p>Password</p>
-                                <input
+                                <input value={formData.password}
+                                    onChange={(e) => {
+                                        setFormData({ ...formData, password: e.target.value });
+                                    }}
                                     type="password"
                                     className="border border-gray-400 rounded-lg px-3 w-full h-10"
                                 />
@@ -122,9 +255,16 @@ const LandingPage = () => {
                         </div>
 
                         {/* Next Button */}
-                        <button className="bg-purple-700 text-white mt-5 w-full py-2 rounded-lg font-bold">
-                            Next
-                        </button>
+                        {
+                            loading ?
+                                <div className="w-full flex justify-center items-center pt-5">
+                                    <div className="w-6 h-6 border-4 border-gray-300 border-t-purple-600 rounded-full animate-spin" />
+                                </div>
+                                :
+                                <button onClick={handleSignup} className="bg-purple-700 text-white mt-5 w-full py-2 rounded-lg font-bold">
+                                    Next
+                                </button>
+                        }
                     </div>
                 </div>
             )}

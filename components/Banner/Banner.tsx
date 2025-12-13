@@ -1,15 +1,21 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 type BannerProps = {
     selectedFlight: any;
     adults: number;
     children: number;
     classType: string;
+    userData: any;
+    activeIndex: number;
+    setActiveIndex: any;
 };
 
-const Banner = ({ selectedFlight, adults, children, classType }: BannerProps) => {
+const Banner = ({ activeIndex, setActiveIndex, userData, selectedFlight, adults, children, classType }: BannerProps) => {
     const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     // If nothing is selected → don't render anything
     if (!selectedFlight) return null;
@@ -74,11 +80,62 @@ const Banner = ({ selectedFlight, adults, children, classType }: BannerProps) =>
 
 
 
+    const handleBookFlight = async () => {
+        const email = localStorage.getItem("userEmail");
+        setLoading(true);
+        if (!email) {
+            alert("User not logged in");
+            router.push("/auth");
+            return;
+        }
+
+        const bookedFlightData = {
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            email: email,
+
+            airline: selectedFlight.airline,
+            flightNumber: selectedFlight.flightNumber,
+            fromCity: selectedFlight.from,
+            toCity: selectedFlight.to,
+            departureTime: selectedFlight.departureTime,
+            arrivalTime: selectedFlight.arrivalTime,
+            totalPrice: totalPrice,
+
+            seatNumbers: selectedSeats
+        };
+
+        try {
+            const res = await fetch("http://localhost:8080/flight/book", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(bookedFlightData)
+            });
+
+            if (!res.ok) {
+                alert("Booking failed");
+                return;
+            }
+
+            setLoading(false);
+            const message = await res.text();
+            alert(message); // "Flight booked successfully"
+            setActiveIndex(1);
+
+        } catch (err) {
+            alert("Network error. Try again.");
+        }
+    };
+
+
+
     return (
         <div className="relative w-full flex flex-row justify-between items-start px-30 py-10">
 
             {/* LEFT: Selected Flight Details */}
-            <div className="flex flex-col gap-10 justify-between">
+            <div className="flex flex-col gap-5 justify-between">
                 <div className="bg-white rounded-xl p-6 border border-gray-300">
                     <h2 className="text-xl font-bold text-gray-900 mb-3">
                         {airline} — {flightNumber}
@@ -101,6 +158,13 @@ const Banner = ({ selectedFlight, adults, children, classType }: BannerProps) =>
                     <p className="text-gray-700 text-xl text-bold">Total Amount -</p>
                     <p className="text-xl text-purple-700 font-bold"> ₹ {totalPrice.toLocaleString()}</p>
                 </div>
+
+                <button onClick={handleBookFlight} className="bg-purple-600 rounded-xl p-2 border flex justify-center gap-2 items-center flex-wrap border-purple-300">
+                    {loading ?
+                        <div className="w-6 h-6 border-4 border-gray-300 border-t-purple-600 rounded-full animate-spin" />
+                        :
+                        <h2 className="text-white text-xl text-bold">Book</h2>}
+                </button>
             </div>
 
             {/* CENTER: Plane Model Banner */}
@@ -131,7 +195,7 @@ const Banner = ({ selectedFlight, adults, children, classType }: BannerProps) =>
                                 key={index}
                                 onClick={() => handleSeatClick(seatNum)}
                                 className={`w-8 h-8 flex items-center justify-center border rounded-md shadow-md 
-                        ${isSelected ? "bg-green-500 text-white" : "border-gray-400 hover:bg-green-400"}`}
+                        ${isSelected ? "bg-purple-600 text-white" : "border-gray-400 hover:bg-purple-500"}`}
                             >
                                 <span className="text-sm">{seatNum}</span>
                             </button>

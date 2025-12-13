@@ -11,20 +11,28 @@ const FrontPage = () => {
     const [adults, setAdults] = useState(1);
     const [children, setChildren] = useState(0);
     const [classType, setClassType] = useState("Economy");
+    const [userData, setUserData] = useState<any>(null);
+    const [activeIndex, setActiveIndex] = useState(0);
     const router = useRouter();
 
     useEffect(() => {
-        const isLoggedIn = localStorage.getItem("isLoggedIn");
-        if (!isLoggedIn) {
-            router.push("/main");
+        const email = localStorage.getItem("userEmail");
+        if (!email) {
+            router.push("/auth");
+            return;
         }
+
+        fetch(`http://localhost:8080/auth/me?email=${email}`)
+            .then(res => res.json())
+            .then(data => setUserData(data))
+            .catch(() => router.push("/auth"));
     }, []);
 
     return (
         <div className="w-full bg-white">
-            <Front_Header />
+            <Front_Header userData={userData} />
             {/* model banner */}
-            <Banner selectedFlight={selectedFlight} adults={adults} children={children} classType={classType} />
+            <Banner activeIndex={activeIndex} setActiveIndex={setActiveIndex} userData={userData} selectedFlight={selectedFlight} adults={adults} children={children} classType={classType} />
             {/* reserve_system */}
             <Controll_Pannel onSelectFlight={(flight) => setSelectedFlight(flight)}
                 adults={adults}
@@ -32,7 +40,9 @@ const FrontPage = () => {
                 classType={classType}
                 setAdults={setAdults}
                 setChildren={setChildren}
-                setClassType={setClassType} />
+                setClassType={setClassType}
+                activeIndex={activeIndex}
+                setActiveIndex={setActiveIndex} />
 
             {/* About */}
             <div className="w-[100%] justify-center flex">
