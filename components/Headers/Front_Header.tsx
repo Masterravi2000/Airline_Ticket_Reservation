@@ -14,7 +14,7 @@ const Front_Header = ({ userData }) => {
             {/* logo */}
             <div className="flex flex-row justify-center items-center gap-2">
                 <Image
-                    src="/logo/Skyward2.JPG"
+                    src="/logo/Skyward2.jpg"
                     alt="Logo"
                     width={70}
                     height={10}

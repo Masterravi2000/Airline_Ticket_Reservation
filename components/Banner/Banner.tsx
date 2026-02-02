@@ -21,7 +21,7 @@ const Banner = ({ activeIndex, setActiveIndex, userData, selectedFlight, adults,
     if (!selectedFlight) return (
         <div className="h-130 flex flex-col items-center bg-white">
             <Image
-                src="/Images/LandingPageImage3.JPG"
+                src="/Images/LandingPageImage3.jpg"
                 alt=""
                 width={1700}
                 height={0}
@@ -43,16 +43,16 @@ const Banner = ({ activeIndex, setActiveIndex, userData, selectedFlight, adults,
 
     // Map airlines to model images
     const airlineImages: Record<string, string> = {
-        "IndiGo": "/models/indigo2.JPG",
-        "Vistara": "/models/vistara.JPG",
-        "Air India": "/models/airindia.JPG",
-        "SpiceJet": "/models/spicejet.JPG",
-        "Akasa": "/models/akasa.JPG",
-        "Emirates": "/models/emirates.JPG",
-        "Singapore Airlines": "/models/singapore.JPG"
+        "IndiGo": "/models/indigo2.jpg",
+        "Vistara": "/models/vistara.jpg",
+        "Air India": "/models/airindia.jpg",
+        "SpiceJet": "/models/spicejet.jpg",
+        "Akasa": "/models/akasa.jpg",
+        "Emirates": "/models/emirates.jpg",
+        "Singapore Airlines": "/models/singapore.jpg"
     };
 
-    const imageSrc = airlineImages[airline] || "/models/default.JPG";
+    const imageSrc = airlineImages[airline] || "/models/default.jpg";
 
     const handleSeatClick = (seatNumber: number) => {
         setSelectedSeats((prev) =>
