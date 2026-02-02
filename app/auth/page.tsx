@@ -119,7 +119,7 @@ const LandingPage = () => {
             <div className="flex w-[100%] flex-row">
                 <div className="w-1.5/2">
                     <Image
-                        src="/Images/Landing.JPG"
+                        src="/Images/Landing.jpg"
                         alt=""
                         width={1500}
                         height={240}
