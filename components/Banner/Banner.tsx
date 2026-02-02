@@ -116,7 +116,7 @@ const Banner = ({ activeIndex, setActiveIndex, userData, selectedFlight, adults,
         };
 
         try {
-            const res = await fetch("http://localhost:8080/flight/book", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/flight/book`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

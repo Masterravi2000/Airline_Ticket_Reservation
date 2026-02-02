@@ -37,7 +37,7 @@ const FrontPage = () => {
             return;
         }
 
-        fetch(`http://localhost:8080/auth/me?email=${email}`)
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/me?email=${email}`)
             .then(res => res.json())
             .then(data => setUserData(data))
             .catch(() => router.push("/auth"));
@@ -49,7 +49,7 @@ const FrontPage = () => {
             if (!email) return;
 
             try {
-                const res = await fetch(`http://localhost:8080/flight/my-flights?email=${email}`);
+                const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/flight/my-flights?email=${email}`);
                 if (!res.ok) throw new Error("Failed to fetch booked flights");
 
                 const data = await res.json();
