@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/images/SkywardBanner.JPG" width="100%" style="margin-right: 12px;" />
+  <img src="public/images/SkywardBanner.jpg" width="100%" style="margin-right: 12px;" />
 </p>
 
 # Skyward
@@ -15,16 +15,16 @@ The platform focuses on simplicity and clarity — allowing users to search flig
 ## 📸 Screenshots / Demo
 
 <p align="center">
-  <img src="public/Images/SkywardImg.png" width="300" style="margin-right: 12px;" />
-  <img src="public/Images/SkywardLoginPage.png" width="300" style="margin-right: 12px;" />
+  <img src="public/Images/SkywardImg.png" width="350" style="margin-right: 12px;" />
+  <img src="public/Images/SkywardLoginPage.png" width="350" style="margin-right: 12px;" />
 </p>
 
 **Authentication & Control Panel**  
 Skyward supports secure user signup and login. After authentication, users are redirected to the control panel where they can initiate a flight booking by selecting route, date, and travel class.
 
 <p align="center">
-  <img src="public/Images/SkywardHomePage.png" width="300" style="margin-right: 12px;" />
-  <img src="public/Images/SkywardBookedRecordsScreenShot.png" width="300" style="margin-right: 12px;" />
+  <img src="public/Images/SkywardHomePage.png" width="350" style="margin-right: 12px;" />
+  <img src="public/Images/SkywardBookedRecordsScreenShot.png" width="350" style="margin-right: 12px;" />
 </p>
 
 **Flight Selection & Booking Flow**  
