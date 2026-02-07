@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/images/SkywardBanner.png" width="100%" style="margin-right: 12px;" />
+  <img src="public/Images/SkywardBanner.png" width="100%" style="margin-right: 12px;" />
 </p>
 
 # Skyward
